@@ -78,7 +78,6 @@ class dovecot (
   $main_file_defaults = {
     'filename'        => $main_config_file,
     'path'            => $config_path,
-    'local_configdir' => $local_configdir,
     'owner'           => $owner,
     'group'           => $group,
     'mode'            => $mode,
@@ -89,11 +88,10 @@ class dovecot (
 
   $file_defaults = {
     'path'            => "${config_path}/${local_configdir}",
-    'local_configdir' => $local_configdir,
     'owner'           => $owner,
     'group'           => $group,
     'mode'            => $mode,
-    'include_in'      => "${config_path}/${main_config_file}",
+    'include_in'      => '',
   }
 
   include ::dovecot::install
@@ -106,7 +104,7 @@ class dovecot (
   if $include_sysdefault  {
     concat::fragment { 'dovecot: include system defaults':
       target  => "${config_path}/${main_config_file}",
-      content => '!include conf.d/*',
+      content => '!include conf.d/*.conf',
       order   => '00',
     }
   }

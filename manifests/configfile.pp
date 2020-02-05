@@ -33,7 +33,6 @@ define dovecot::configfile (
   String $owner,
   String $group,
   String $mode,
-  String $local_configdir,
   String $include_in      = '',
   String $filename        = $title,
   Hash   $values          = {},
@@ -57,8 +56,8 @@ define dovecot::configfile (
 
   if $include_in != '' {
     concat::fragment { "dovecot: include ${filename} in ${include_in}":
-      target  => $include_in,
-      content => "!include ${local_configdir}/${filename}",
+      target  => "${path}/${include_in}",
+      content => "!include ${filename}",
       order   => '01',
     }
   }
